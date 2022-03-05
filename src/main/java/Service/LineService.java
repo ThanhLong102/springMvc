@@ -1,32 +1,17 @@
 package Service;
 
 import Entity.Line;
-import Repository.LineDao;
-import Repository.LineDaoImpl;
 
 import java.util.List;
 
-public class LineService {
+public interface LineService {
+    void add(Line line);
 
-    public LineDao lineDao = new LineDaoImpl();
+    Line findById(int id);
 
-    public void add(Line line) {
-        lineDao.add(line);
-    }
+    List<Line> getAll();
 
-    public Line findById(int id) {
-        return lineDao.findById(id);
-    }
+    void delete(int id);
 
-    public List<Line> getAll(){
-        return lineDao.getAll();
-    }
-
-    public void delete(int id){
-        lineDao.delete(id);
-    }
-
-    public void update(Line line){
-        lineDao.update(line);
-    }
+    void update(Line line);
 }

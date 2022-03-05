@@ -1,32 +1,18 @@
 package Service;
 
 import Entity.Driver;
-import Repository.DriverDao;
-import Repository.DriverDaoImpl;
 
 import java.util.List;
 
-public class DriverService {
-    public final DriverDao driverDao = new DriverDaoImpl();
+public interface DriverService {
 
-    public void add(Driver driver) {
-        driverDao.add(driver);
-    }
+    void add(Driver driver);
 
-    public Driver findById(int driverId) {
-        return driverDao.findById(driverId);
-    }
+    Driver findById(int driverId);
 
-    public List<Driver> getAll(){
-        return driverDao.getAll();
-    }
+    List<Driver> getAll();
 
-    public void delete(int driverId){
-        driverDao.delete(driverId);
-    }
+    void delete(int driverId);
 
-    public void update(Driver driver){
-        driverDao.update(driver);
-    }
-
+    void update(Driver driver);
 }

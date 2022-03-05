@@ -2,14 +2,23 @@ package Repository;
 
 import AssignmetTable.AssignmentTable;
 import Entity.Assignment;
+import Entity.Line;
 
 import java.util.List;
 
 public interface AssignmentDao {
 
-    void addNewAssgnment(Assignment assignment);
+    void add(Assignment assignment);
 
-    List<AssignmentTable> getAll();
+    List<Assignment> getAll();
 
     void update(Assignment assignment);
+
+    Assignment findById(int driverId,int lineID);
+
+    List<Assignment> findByDriverName(String driverName);
+
+    void delete(int driverId,int lineID);
+
+    List<Assignment> findByDriverId(int driverID);
 }

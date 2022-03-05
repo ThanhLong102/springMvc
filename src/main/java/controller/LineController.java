@@ -2,6 +2,7 @@ package controller;
 
 import Entity.Line;
 import Service.LineService;
+import Service.LineServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,7 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/")
 public class LineController {
-    private final LineService lineService = new LineService();
+    private final LineService lineService = new LineServiceImpl();
 
     @RequestMapping(value = "/list-lines", method = RequestMethod.GET)
     public String showLines(ModelMap model) {
@@ -47,7 +48,7 @@ public class LineController {
     }
 
     @RequestMapping(value = "/add-line", method = RequestMethod.POST)
-    public String addTodo(@Valid Line line) {
+    public String addLine(@Valid Line line) {
         lineService.add(line);
         return "redirect:/list-lines";
     }

@@ -5,7 +5,7 @@
   Time: 10:58 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Header</title>
@@ -18,11 +18,12 @@
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark ">
     <!-- Brand/logo -->
     <a class="navbar-brand col-7" href="${pageContext.request.contextPath}">
-        <img src="https://cdn2.steamgriddb.com/file/sgdb-cdn/logo_thumb/6822951732be44edf818dc5a97d32ca6.png" alt="" style="height: 50px">
+        <img src="https://cdn2.steamgriddb.com/file/sgdb-cdn/logo_thumb/6822951732be44edf818dc5a97d32ca6.png" alt=""
+             style="height: 50px">
     </a>
 
     <!-- Links -->
-    <ul class="navbar-nav col-5 d-flex justify-content-around mr-5">
+    <ul class="navbar-nav col-5 d-flex justify-content-around" style="margin-right: 150px">
         <li class="nav-item">
             <a class="nav-link" href="${pageContext.request.contextPath}/list-drivers">Driver</a>
         </li>
@@ -30,7 +31,7 @@
             <a class="nav-link" href="${pageContext.request.contextPath}/list-lines">Line</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Assigment</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/list-assignments">Assigment</a>
         </li>
     </ul>
 </nav>

@@ -2,6 +2,7 @@ package controller;
 
 import Entity.Driver;
 import Service.DriverService;
+import Service.DriverServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +15,7 @@ import javax.validation.Valid;
 @RequestMapping("/")
 public class DriverController {
 
-    private final DriverService driverService = new DriverService();
+    private final DriverService driverService = new DriverServiceImpl();
 
     @RequestMapping(value = "/list-drivers", method = RequestMethod.GET)
     public String showDrivers(ModelMap model) {
@@ -29,7 +30,7 @@ public class DriverController {
     }
 
     @RequestMapping(value = "/delete-driver", method = RequestMethod.GET)
-    public String deleteTodo(@RequestParam int id) {
+    public String deleteDriver(@RequestParam int id) {
         driverService.delete(id);
         return "redirect:/list-drivers";
     }
@@ -48,7 +49,7 @@ public class DriverController {
     }
 
     @RequestMapping(value = "/add-driver", method = RequestMethod.POST)
-    public String addTodo(@Valid Driver driver) {
+    public String addDriver(@Valid Driver driver) {
         driverService.add(driver);
         return "redirect:/list-drivers";
     }
