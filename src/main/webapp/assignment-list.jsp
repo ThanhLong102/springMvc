@@ -26,8 +26,13 @@
 <body>
 <%@ include file="common/header.jsp" %>
 <div class="container">
-    <a type="button" class="btn btn-primary btn-md ml-sm-3 mt-5" href="${pageContext.request.contextPath}/add-assignment">Add
-        Assigment</a>
+    <nav class="navbar">
+        <a type="button" class="btn btn-primary btn-md ml-sm-3 mt-5"
+           href="${pageContext.request.contextPath}/add-assignment">Add
+            Assigment</a>
+        <a type="button" class="btn btn-primary btn-md ml-sm-3 mt-5"
+           href="${pageContext.request.contextPath}/list-assignment-tables">Statistical</a>
+    </nav>
     <nav class="navbar">
         <form action="${pageContext.request.contextPath}/list-assignment-drivers" method="get">
             <label>
@@ -36,7 +41,8 @@
             <button class="btn btn-success">Search</button>
         </form>
         <form action="${pageContext.request.contextPath}/list-filter-assignments" method="get">
-            <label for="filter"></label><select path="filter" id="filter" name="filter" style="padding:10px; border-radius: 5px;">
+            <label for="filter"></label><select path="filter" id="filter" name="filter"
+                                                style="padding:10px; border-radius: 5px;">
             <option value="driver-name">Driver name</option>
             <option value="turn-number">Turn number</option>
         </select>

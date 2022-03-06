@@ -1,12 +1,19 @@
 package Service;
 
+import Dto.AssigmentTableDto;
+import Dto.AssignmentTable;
+import Dto.LineTurn;
 import Entity.Assignment;
+import Entity.Driver;
 import Repository.AssigmnetDaoImpl;
 import Repository.AssignmentDao;
 import Util.CollectionUtil;
 import Util.DataUtil;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AssignmentServiceImpl implements AssignmentService {
 
@@ -71,8 +78,8 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public Assignment findById(int driverId, int lineId){
-        return assignmentDao.findById(driverId,lineId);
+    public Assignment findById(int driverId, int lineId) {
+        return assignmentDao.findById(driverId, lineId);
     }
 
     @Override
@@ -99,7 +106,39 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Override
     public List<Assignment> sortByTurnNumber() {
         List<Assignment> assignmentList = assignmentDao.getAll();
-         assignmentList.sort((o1, o2) -> o2.getTurnNumber() - o1.getTurnNumber());
+        assignmentList.sort((o1, o2) -> o2.getTurnNumber() - o1.getTurnNumber());
         return assignmentList;
+    }
+
+
+    public List<AssignmentTable> getAssigmentTable() {
+        List<Assignment> assignmentList = assignmentDao.getAll();
+        List<AssignmentTable> assignmentTableList = new ArrayList<>();
+        for (Assignment assignment : assignmentList) {
+            boolean checkExits = false;
+            for (AssignmentTable assignmentTable : assignmentTableList) {
+                if (assignmentTable.getDriver().getId() == assignment.getDriver().getId()) {
+                    assignmentTable.getLineTurns().add(new LineTurn(assignment.getLine(), assignment.getTurnNumber()));
+                    checkExits = true;
+                    break;
+                }
+            }
+            if (!checkExits) {
+                List<LineTurn> lineTurns = new ArrayList<>();
+                lineTurns.add(new LineTurn(assignment.getLine(), assignment.getTurnNumber()));
+                assignmentTableList.add(new AssignmentTable(assignment.getDriver(), lineTurns));
+            }
+        }
+        return assignmentTableList;
+    }
+
+    @Override
+    public List<AssigmentTableDto> distanceStatistics() {
+        List<AssignmentTable> assignmentTableList = getAssigmentTable();
+        List<AssigmentTableDto> assigmentTableDtoList = new ArrayList<>();
+        for (AssignmentTable assignmentTable : assignmentTableList) {
+            assigmentTableDtoList.add(new AssigmentTableDto(assignmentTable.getDriver(), assignmentTable.getLineTurns().stream().mapToDouble(LineTurn::getDistance).sum()));
+        }
+        return assigmentTableDtoList;
     }
 }

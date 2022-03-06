@@ -1,8 +1,6 @@
 package Repository;
 
-import AssignmetTable.AssignmentTable;
 import Entity.Assignment;
-import Entity.Line;
 
 import java.util.List;
 

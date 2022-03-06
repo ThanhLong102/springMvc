@@ -1,18 +1,15 @@
-package AssignmetTable;
+package Dto;
 
 import Entity.Driver;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AssignmentTable {
-
+public class AssigmentTableDto {
     private Driver driver;
 
-    private List<LineTurn> lineTurns;
+    private Double totalDistance;
 }

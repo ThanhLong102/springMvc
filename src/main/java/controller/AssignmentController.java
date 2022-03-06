@@ -29,6 +29,12 @@ public class AssignmentController {
         return "assignment-list";
     }
 
+    @RequestMapping(value = "/list-assignment-tables", method = RequestMethod.GET)
+    public String showAssignmentTables(ModelMap model) {
+        model.put("assignmentTables", assignmentService.distanceStatistics());
+        return "assignmentTable-list";
+    }
+
     @RequestMapping(value = "/add-assignment", method = RequestMethod.GET)
     public String showAddAssignmentPage(ModelMap model) {
         model.addAttribute("assignment", new AssignmentDto());

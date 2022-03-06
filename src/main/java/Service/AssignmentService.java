@@ -1,5 +1,6 @@
 package Service;
 
+import Dto.AssigmentTableDto;
 import Entity.Assignment;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface AssignmentService {
     List<Assignment> sortByNameDriver();
 
     List<Assignment> sortByTurnNumber();
+
+    List<AssigmentTableDto> distanceStatistics();
 }

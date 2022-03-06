@@ -1,4 +1,4 @@
-package AssignmetTable;
+package Dto;
 
 import Entity.Line;
 import lombok.AllArgsConstructor;
