@@ -54,27 +54,30 @@
     <table class="table table-striped table-dark" id="table-data">
         <thead>
         <tr>
-            <th scope="col">#</th>
             <th scope="col">Lái xe</th>
+            <th scope="col">#</th>
             <th scope="col">ID Tuyến</th>
             <th scope="col">Khoảng cách tuyến</th>
             <th scope="col">Số lượt</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="assignment" items="${assignments}">
+        <c:forEach var="assignmentTable" items="${assignmentTables}">
             <tr>
+            <td class="fullName">${assignmentTable.driver.fullName}</td>
+            <c:forEach var="lineTurn" items="${assignmentTable.lineTurns}">
                 <td>
                     <a type="button" class="btn btn-success"
-                       href="${pageContext.request.contextPath}/update-assignment?driverId=${assignment.driver.id}&lineId=${assignment.line.id}">Update</a>
+                       href="${pageContext.request.contextPath}/update-assignment?driverId=${assignmentTable.driver.id}&lineId=${lineTurn.line.id}">Update</a>
                     <a type="button" class="btn btn-warning"
-                       href="${pageContext.request.contextPath}/delete-assignment?driverId=${assignment.driver.id}&lineId=${assignment.line.id}">Delete</a>
+                       href="${pageContext.request.contextPath}/delete-assignment?driverId=${assignmentTable.driver.id}&lineId=${lineTurn.line.id}">Delete</a>
                 </td>
-                <td class="fullName">${assignment.driver.fullName}</td>
-                <td class="id">${assignment.line.id}</td>
-                <td class="distance">${assignment.line.distance}</td>
-                <td class="turnNumber">${assignment.turnNumber}</td>
-            </tr>
+                <td class="id">${lineTurn.line.id}</td>
+                <td class="distance">${lineTurn.line.distance}</td>
+                <td class="turnNumber">${lineTurn.turnNumber}</td>
+                </tr>
+                <td></td>
+            </c:forEach>
         </c:forEach>
         </tbody>
     </table>

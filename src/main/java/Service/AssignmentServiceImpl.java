@@ -1,19 +1,17 @@
 package Service;
 
 import Dto.AssigmentTableDto;
+import Dto.AssignmentDto;
 import Dto.AssignmentTable;
 import Dto.LineTurn;
 import Entity.Assignment;
-import Entity.Driver;
 import Repository.AssigmnetDaoImpl;
 import Repository.AssignmentDao;
 import Util.CollectionUtil;
 import Util.DataUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AssignmentServiceImpl implements AssignmentService {
 
@@ -60,13 +58,14 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public String update(Assignment assignment) {
-        List<Assignment> exitsAssignmentList = assignmentDao.findByDriverId(assignment.getDriver().getId());
-        Assignment exitsAssignment = assignmentDao.findById(assignment.getDriver().getId(), assignment.getLine().getId());
+    public String update(AssignmentDto assignmentDto) {
+        List<Assignment> exitsAssignmentList = assignmentDao.findByDriverId(assignmentDto.getDriverId());
+        Assignment exitsAssignment = assignmentDao.findById(assignmentDto.getDriverId(), assignmentDto.getLineId());
         int turnSumCurrent = exitsAssignmentList.stream().mapToInt(Assignment::getTurnNumber).sum() - exitsAssignment.getTurnNumber();
-        if (turnSumCurrent + assignment.getTurnNumber() <= 15) {
-            assignmentDao.update(assignment);
-            return "override-assignment-exits";
+        if (turnSumCurrent + assignmentDto.getTurnNumber() <= 15) {
+            exitsAssignment.setTurnNumber(assignmentDto.getTurnNumber());
+            assignmentDao.update(exitsAssignment);
+            return "success";
         } else {
             return "over-15-turn";
         }
@@ -83,15 +82,15 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public List<Assignment> findByDriverName(String driverName) {
-        return assignmentDao.findByDriverName(driverName);
+    public List<AssignmentTable> findByDriverName(String driverName) {
+        return getAssigmentTable(assignmentDao.findByDriverName(driverName));
     }
 
     @Override
-    public List<Assignment> sortByNameDriver() {
-        List<Assignment> assignmentList = assignmentDao.getAll();
+    public List<AssignmentTable> sortByNameDriver() {
+        List<AssignmentTable> assignmentTableList = getAssigmentTable(assignmentDao.getAll());
 
-        assignmentList.sort((o1, o2) -> {
+        assignmentTableList.sort((o1, o2) -> {
             String[] ten1 = o1.getDriver().getFullName().split("\\s+");
             String[] ten2 = o2.getDriver().getFullName().split("\\s+");
             if (ten1[ten1.length - 1].equalsIgnoreCase(ten2[ten2.length - 1])) {
@@ -100,19 +99,19 @@ public class AssignmentServiceImpl implements AssignmentService {
                 return ten1[ten1.length - 1].compareToIgnoreCase(ten2[ten2.length - 1]);
             }
         });
-        return assignmentList;
+        return assignmentTableList;
     }
 
     @Override
-    public List<Assignment> sortByTurnNumber() {
-        List<Assignment> assignmentList = assignmentDao.getAll();
-        assignmentList.sort((o1, o2) -> o2.getTurnNumber() - o1.getTurnNumber());
-        return assignmentList;
+    public List<AssignmentTable> sortByTurnNumber() {
+        List<AssignmentTable> assignmentTableList = getAssigmentTable(assignmentDao.getAll());
+        assignmentTableList.sort((o1, o2) -> o2.getLineTurns().size() - o1.getLineTurns().size());
+        return assignmentTableList;
     }
 
 
-    public List<AssignmentTable> getAssigmentTable() {
-        List<Assignment> assignmentList = assignmentDao.getAll();
+    @Override
+    public List<AssignmentTable> getAssigmentTable(List<Assignment> assignmentList) {
         List<AssignmentTable> assignmentTableList = new ArrayList<>();
         for (Assignment assignment : assignmentList) {
             boolean checkExits = false;
@@ -134,7 +133,7 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Override
     public List<AssigmentTableDto> distanceStatistics() {
-        List<AssignmentTable> assignmentTableList = getAssigmentTable();
+        List<AssignmentTable> assignmentTableList = getAssigmentTable(getAll());
         List<AssigmentTableDto> assigmentTableDtoList = new ArrayList<>();
         for (AssignmentTable assignmentTable : assignmentTableList) {
             assigmentTableDtoList.add(new AssigmentTableDto(assignmentTable.getDriver(), assignmentTable.getLineTurns().stream().mapToDouble(LineTurn::getDistance).sum()));

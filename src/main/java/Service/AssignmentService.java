@@ -1,6 +1,8 @@
 package Service;
 
 import Dto.AssigmentTableDto;
+import Dto.AssignmentDto;
+import Dto.AssignmentTable;
 import Entity.Assignment;
 
 import java.util.List;
@@ -11,17 +13,19 @@ public interface AssignmentService {
 
     String add(Assignment assignment);
 
-    String update(Assignment assignment);
+    String update(AssignmentDto assignmentDto);
 
     void delete(int driverId, int lineId);
 
     Assignment findById(int driverId, int lineId);
 
-    List<Assignment> findByDriverName(String driverName);
+    List<AssignmentTable> findByDriverName(String driverName);
 
-    List<Assignment> sortByNameDriver();
+    List<AssignmentTable> sortByNameDriver();
 
-    List<Assignment> sortByTurnNumber();
+    List<AssignmentTable> sortByTurnNumber();
+
+    List<AssignmentTable> getAssigmentTable(List<Assignment> assignmentList);
 
     List<AssigmentTableDto> distanceStatistics();
 }

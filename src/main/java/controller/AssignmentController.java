@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -25,7 +27,7 @@ public class AssignmentController {
 
     @RequestMapping(value = "/list-assignments", method = RequestMethod.GET)
     public String showAssignments(ModelMap model) {
-        model.put("assignments", assignmentService.getAll());
+        model.put("assignmentTables", assignmentService.getAssigmentTable(assignmentService.getAll()));
         return "assignment-list";
     }
 
@@ -51,20 +53,24 @@ public class AssignmentController {
 
     @RequestMapping(value = "/update-assignment", method = RequestMethod.GET)
     public String showUpdateAssignmentPage(@RequestParam int driverId, @RequestParam int lineId, ModelMap model) {
-        Assignment assignment = assignmentService.findById(driverId,lineId);
-        model.put("assignment", assignment);
-        model.put("drivers", driverService.getAll());
-        model.put("lines", lineService.getAll());
+        model.put("assignment", new AssignmentDto());
+        List<Driver> driverList = new ArrayList<>();
+        driverList.add(driverService.findById(driverId));
+        List<Line> lineList = new ArrayList<>();
+        lineList.add(lineService.findById(lineId));
+        model.put("drivers", driverList);
+        model.put("lines", lineList);
         return "assignment-form";
     }
 
     @RequestMapping(value = "/update-assignment", method = RequestMethod.POST)
-    public String updateAssignment(@Valid Assignment assignment) {
-        String message = assignmentService.update(assignment);
+    public String updateAssignment(@RequestParam int driverId, @RequestParam int lineId, @Valid AssignmentDto assignmentDto) {
+        String message = assignmentService.update(assignmentDto);
+        System.out.println(message);
         if(Objects.equals(message, "success")){
             return "redirect:/list-assignments";
         }
-        return "response"+"?"+message;
+        return "redirect:/response"+"?message="+message;
     }
 
     @RequestMapping(value = "/response", method = RequestMethod.GET)
@@ -89,17 +95,17 @@ public class AssignmentController {
 
     @RequestMapping(value = "/list-assignment-drivers", method = RequestMethod.GET)
     public String showAssignmentsByDriverName(ModelMap model, @RequestParam String name) {
-        model.put("assignments", assignmentService.findByDriverName(name));
+        model.put("assignmentTables", assignmentService.findByDriverName(name));
         return "assignment-list";
     }
 
     @RequestMapping(value = "/list-filter-assignments", method = RequestMethod.GET)
     public String sortAssignments(ModelMap model, @RequestParam String filter) {
         if(filter.equals("driver-name")){
-            model.put("assignments", assignmentService.sortByNameDriver());
+            model.put("assignmentTables", assignmentService.sortByNameDriver());
         }
         else {
-            model.put("assignments", assignmentService.sortByTurnNumber());
+            model.put("assignmentTables", assignmentService.sortByTurnNumber());
         }
         return "assignment-list";
     }
